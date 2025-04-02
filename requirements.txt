@@ -1,0 +1,13 @@
+beautifulsoup4
+cleantext
+flask
+gym
+html2text
+numpy
+pandas
+torch
+rank_bm25
+pyserini
+faiss-cpu
+thefuzz
+gdown
