@@ -1,2 +1,5 @@
-data
-search_engine
+*.egg-info/
+dist/
+build/
+
+webshop_minimal/__pycache__
