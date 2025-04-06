@@ -11,3 +11,5 @@ pyserini
 faiss-cpu
 thefuzz
 gdown
+rich
+spacy
