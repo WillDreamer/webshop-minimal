@@ -2,7 +2,6 @@ conda create -n webshopmini python=3.9 -y
 conda activate webshopmini
 conda install -c pytorch faiss-cpu -y
 sudo apt update
-# appears we still need default jdk for lucene packages
 sudo apt install default-jdk
 pip install -r requirements.txt
 
