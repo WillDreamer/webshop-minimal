@@ -1,9 +1,15 @@
+conda create -n webshopmini python=3.9 -y
+conda activate webshopmini
+conda install -c pytorch faiss-cpu -y
 sudo apt update
+# appears we still need default jdk for lucene packages
 sudo apt install default-jdk
 pip install -r requirements.txt
 
 # setup data
 python -m spacy download en_core_web_sm
+python -m spacy download en_core_web_lg
+
 mkdir -p data
 cd data
 gdown https://drive.google.com/uc?id=1EgHdxQ_YxqIQlvvq5iKlCrkEKR6-j0Ib
@@ -12,10 +18,7 @@ gdown https://drive.google.com/uc?id=14Kb5SPBk_jfdLZ_CDBNitW98QLDlKR5O
 cd ..
 
 # setup search engine
-python -m spacy download en_core_web_lg
 python setup_search_engine.py
 cd search_engine
 bash ../scripts/run_indexing.sh
 cd ..
-
-
