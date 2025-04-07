@@ -1,7 +1,5 @@
-data
-search_engine
-
 # Byte-compiled / optimized / DLL files
+webshop_minimal/__pycache__
 __pycache__/
 *.py[cod]
 
