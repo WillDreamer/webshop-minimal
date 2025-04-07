@@ -23,9 +23,9 @@ from webshop_minimal.engine import (
 )
 from webshop_minimal.goal import get_reward, get_goals
 from webshop_minimal.utils import (
-    DEFAULT_FILE_PATH,
-    FEAT_CONV,
-    FEAT_IDS,
+    get_file_path,
+    get_feat_conv_path,
+    get_feat_ids_path,
     random_idx,
     html_to_markdown
 )
@@ -36,7 +36,7 @@ class WebAgentTextEnv(gym.Env):
     def __init__(
             self,
             observation_mode='html',
-            file_path=DEFAULT_FILE_PATH,
+            file_path=get_file_path(),
             server=None,
             **kwargs
         ):
@@ -75,8 +75,8 @@ class WebAgentTextEnv(gym.Env):
         self.session = self.kwargs.get('session')
         self.session_prefix = self.kwargs.get('session_prefix')
         if self.kwargs.get('get_image', 0):
-            self.feats = torch.load(FEAT_CONV)
-            self.ids = torch.load(FEAT_IDS)
+            self.feats = torch.load(get_feat_conv_path())
+            self.ids = torch.load(get_feat_ids_path())
             self.ids = {url: idx for idx, url in enumerate(self.ids)}
         self.prev_obs = []
         self.prev_actions = []

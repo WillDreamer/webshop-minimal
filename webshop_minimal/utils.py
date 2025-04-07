@@ -6,7 +6,6 @@ from os.path import dirname, abspath, join
 from bs4 import BeautifulSoup
 
 BASE_DIR = dirname(abspath(__file__))
-DEBUG_PROD_SIZE = None  # set to `None` to disable
 
 DEFAULT_ATTR_PATH = join(BASE_DIR, 'data/items_ins_v2_1000.json')
 DEFAULT_FILE_PATH = join(BASE_DIR, 'data/items_shuffle_1000.json')
@@ -15,6 +14,47 @@ FEAT_CONV = join(BASE_DIR, 'data/feat_conv.pt') # NOT USED in RAGEN version
 FEAT_IDS = join(BASE_DIR, 'data/feat_ids.pt') # NOT USED in RAGEN version
 
 HUMAN_ATTR_PATH = join(BASE_DIR, 'data/items_human_ins.json')
+
+# TODO: Move this to a config file
+def init_basedir(basedir: str) -> None:
+    """Initialize the base directory for the package and update related paths.
+
+    Args:
+        basedir (str): The base directory path to initialize.
+    """
+    global BASE_DIR, DEFAULT_ATTR_PATH, DEFAULT_FILE_PATH, FEAT_CONV, FEAT_IDS, HUMAN_ATTR_PATH
+    BASE_DIR = basedir
+    DEFAULT_ATTR_PATH = join(BASE_DIR, 'data/items_ins_v2_1000.json')
+    DEFAULT_FILE_PATH = join(BASE_DIR, 'data/items_shuffle_1000.json')
+
+    FEAT_CONV = join(BASE_DIR, 'data/feat_conv.pt')  # NOT USED in RAGEN version
+    FEAT_IDS = join(BASE_DIR, 'data/feat_ids.pt')    # NOT USED in RAGEN version
+
+    HUMAN_ATTR_PATH = join(BASE_DIR, 'data/items_human_ins.json')
+
+def get_base_dir() -> str:
+    """Get the base directory for the package.
+
+    Returns:
+        str: The base directory path.
+    """
+    return BASE_DIR
+
+def get_attr_path() -> str:
+    return DEFAULT_ATTR_PATH
+
+def get_file_path() -> str:
+    return DEFAULT_FILE_PATH
+
+def get_human_attr_path() -> str:
+    return HUMAN_ATTR_PATH
+
+def get_feat_conv_path() -> str:
+    return FEAT_CONV
+
+def get_feat_ids_path() -> str:
+    return FEAT_IDS
+
 
 def random_idx(cum_weights):
     """Generate random index by sampling uniformly from sum of all weights, then

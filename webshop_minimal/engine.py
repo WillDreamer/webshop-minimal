@@ -16,13 +16,12 @@ from rich import print
 from pyserini.search.lucene import LuceneSearcher
 
 from webshop_minimal.utils import (
-    BASE_DIR,
-    DEFAULT_FILE_PATH,
-    DEFAULT_ATTR_PATH,
-    HUMAN_ATTR_PATH
+    get_base_dir,
+    get_attr_path,
+    get_human_attr_path
 )
-
-TEMPLATE_DIR = os.path.join(BASE_DIR, 'templates')
+def get_template_dir():
+    return os.path.join(get_base_dir(), 'templates')
 
 SEARCH_RETURN_N = 50
 PRODUCT_WINDOW = 10
@@ -43,14 +42,14 @@ ACTION_TO_TEMPLATE = {
 def map_action_to_html(action, **kwargs):
     action_name, action_arg = parse_action(action)
     if action_name == 'start':
-        path = os.path.join(TEMPLATE_DIR, 'search_page.html')
+        path = os.path.join(get_template_dir(), 'search_page.html')
         html = render_template_string(
             read_html_template(path=path),
             session_id=kwargs['session_id'],
             instruction_text=kwargs['instruction_text'],
         )
     elif action_name == 'search':
-        path = os.path.join(TEMPLATE_DIR, 'results_page.html')
+        path = os.path.join(get_template_dir(), 'results_page.html')
         html = render_template_string(
             read_html_template(path=path),
             session_id=kwargs['session_id'],
@@ -61,7 +60,7 @@ def map_action_to_html(action, **kwargs):
             instruction_text=kwargs['instruction_text'],
         )
     elif action_name == 'click' and action_arg == END_BUTTON:
-        path = os.path.join(TEMPLATE_DIR, 'done_page.html')
+        path = os.path.join(get_template_dir(), 'done_page.html')
         html = render_template_string(
             read_html_template(path),
             session_id=kwargs['session_id'],
@@ -78,7 +77,7 @@ def map_action_to_html(action, **kwargs):
             product_category=kwargs.get('product_category'),
         )
     elif action_name == 'click' and action_arg in ACTION_TO_TEMPLATE:
-        path = os.path.join(TEMPLATE_DIR, ACTION_TO_TEMPLATE[action_arg])
+        path = os.path.join(get_template_dir(), ACTION_TO_TEMPLATE[action_arg])
         html = render_template_string(
             read_html_template(path),
             session_id=kwargs['session_id'],
@@ -90,7 +89,7 @@ def map_action_to_html(action, **kwargs):
             instruction_text=kwargs.get('instruction_text')
         )
     elif action_name == 'click':
-        path = os.path.join(TEMPLATE_DIR, 'item_page.html')
+        path = os.path.join(get_template_dir(), 'item_page.html')
         html = render_template_string(
             read_html_template(path),
             session_id=kwargs['session_id'],
@@ -192,6 +191,7 @@ def generate_product_prices(all_products):
 
 
 def init_search_engine(num_products=None):
+    breakpoint()
     if num_products == 100:
         indexes = 'indexes_100'
     elif num_products == 1000:
@@ -202,7 +202,7 @@ def init_search_engine(num_products=None):
         indexes = 'indexes'
     else:
         raise NotImplementedError(f'num_products being {num_products} is not supported yet.')
-    search_engine = LuceneSearcher(os.path.join(BASE_DIR, f'search_engine/{indexes}'))
+    search_engine = LuceneSearcher(os.path.join(get_base_dir(), f'search_engine/{indexes}'))
     return search_engine
 
 
@@ -237,11 +237,11 @@ def load_products(filepath, num_products=None, human_goals=True):
     all_ratings = dict()
 
     if human_goals:
-        with open(HUMAN_ATTR_PATH) as f:
+        with open(get_human_attr_path()) as f:
             human_attributes = json.load(f)
-    with open(DEFAULT_ATTR_PATH) as f:
+    with open(get_attr_path()) as f:
         attributes = json.load(f)
-    with open(HUMAN_ATTR_PATH) as f:
+    with open(get_human_attr_path()) as f:
         human_attributes = json.load(f)
     print('Attributes loaded.')
 

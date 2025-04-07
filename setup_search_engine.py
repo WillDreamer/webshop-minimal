@@ -3,10 +3,10 @@ import json
 from tqdm import tqdm
 sys.path.insert(0, '../')
 
-from utils import DEFAULT_FILE_PATH
+from utils import get_file_path
 from engine import load_products
 
-all_products, *_ = load_products(filepath=DEFAULT_FILE_PATH)
+all_products, *_ = load_products(filepath=get_file_path())
 
 import os
 os.makedirs('./search_engine', exist_ok=True)
