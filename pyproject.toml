@@ -9,6 +9,7 @@ find = { where = ["."] }
 include-package-data = true
 
 [tool.setuptools.package-data]
+# Including these example data for easier dev and testing
 webshop_minimal = [
     "search_engine/**/*",
     "templates/*",
