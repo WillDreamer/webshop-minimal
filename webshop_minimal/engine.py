@@ -191,7 +191,6 @@ def generate_product_prices(all_products):
 
 
 def init_search_engine(num_products=None):
-    breakpoint()
     if num_products == 100:
         indexes = 'indexes_100'
     elif num_products == 1000:
