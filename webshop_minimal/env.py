@@ -123,7 +123,7 @@ class WebAgentTextEnv(gym.Env):
                 text_list.append(self.prev_obs[-i])
         state = ' [SEP] '.join(text_list[::-1])
         self.prev_obs.append(ob)
-        return state, status['reward'], status['done'], info
+        return state, status['reward'], status['done'], status['info'] if 'info' in status else None
 
     def get_available_actions(self):
         """Returns list of available actions at the current step"""
@@ -501,7 +501,7 @@ class SimServer:
             options=session["options"],
             instruction_text=session["goal"]["instruction_text"],
         )
-        return html, url, reward
+        return html, url, reward, info
     
     def receive(self, session_id, current_url, session_int=None, **kwargs):
         """Map action to the corresponding page"""
@@ -543,7 +543,8 @@ class SimServer:
                 clickable_name = kwargs['clickable_name'].lower()
                 if clickable_name == END_BUTTON.lower():
                     # If "buy now" clicked, calculate reward and flag session as terminated
-                    html, url, reward = self.done(session_id, **kwargs)
+                    html, url, reward, info = self.done(session_id, **kwargs)
+                    status['info'] = info
                     status['reward'] = reward
                     status['done'] = True
                 elif clickable_name == BACK_TO_SEARCH.lower():
