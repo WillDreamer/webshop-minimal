@@ -7,8 +7,9 @@ from bs4 import BeautifulSoup
 
 BASE_DIR = dirname(abspath(__file__))
 
-DEFAULT_ATTR_PATH = join(BASE_DIR, 'data/items_ins_v2_1000.json')
-DEFAULT_FILE_PATH = join(BASE_DIR, 'data/items_shuffle_1000.json')
+# these paths must be initialized with init_basedir
+DEFAULT_ATTR_PATH = "" # join(BASE_DIR, 'data/items_ins_v2_1000.json')
+DEFAULT_FILE_PATH = "" # join(BASE_DIR, 'data/items_shuffle_1000.json')
 
 FEAT_CONV = join(BASE_DIR, 'data/feat_conv.pt') # NOT USED in RAGEN version
 FEAT_IDS = join(BASE_DIR, 'data/feat_ids.pt') # NOT USED in RAGEN version
@@ -16,16 +17,27 @@ FEAT_IDS = join(BASE_DIR, 'data/feat_ids.pt') # NOT USED in RAGEN version
 HUMAN_ATTR_PATH = join(BASE_DIR, 'data/items_human_ins.json')
 
 # TODO: Move this to a config file
-def init_basedir(basedir: str) -> None:
+def init_basedir(dataset: str = 'small') -> None:
     """Initialize the base directory for the package and update related paths.
 
     Args:
-        basedir (str): The base directory path to initialize.
+        dataset (str): Dataset size to use - either 'small' or 'full'. Default is 'small'.
     """
     global BASE_DIR, DEFAULT_ATTR_PATH, DEFAULT_FILE_PATH, FEAT_CONV, FEAT_IDS, HUMAN_ATTR_PATH
-    BASE_DIR = basedir
-    DEFAULT_ATTR_PATH = join(BASE_DIR, 'data/items_ins_v2_1000.json')
-    DEFAULT_FILE_PATH = join(BASE_DIR, 'data/items_shuffle_1000.json')
+    
+    if dataset not in ['small', 'full']:
+        raise ValueError("dataset must be either 'small' or 'full'")
+    
+    # Set file paths based on dataset size
+    if dataset == 'small':
+        attr_file = 'items_ins_v2_1000.json'
+        items_file = 'items_shuffle_1000.json'
+    else:  # full
+        attr_file = 'items_ins_v2.json'
+        items_file = 'items_shuffle.json'
+    
+    DEFAULT_ATTR_PATH = join(BASE_DIR, f'data/{dataset}/{attr_file}')
+    DEFAULT_FILE_PATH = join(BASE_DIR, f'data/{dataset}/{items_file}')
 
     FEAT_CONV = join(BASE_DIR, 'data/feat_conv.pt')  # NOT USED in RAGEN version
     FEAT_IDS = join(BASE_DIR, 'data/feat_ids.pt')    # NOT USED in RAGEN version

@@ -36,7 +36,7 @@ class WebAgentTextEnv(gym.Env):
     def __init__(
             self,
             observation_mode='html',
-            file_path=get_file_path(),
+            file_path="",
             server=None,
             **kwargs
         ):
@@ -54,6 +54,8 @@ class WebAgentTextEnv(gym.Env):
         session_prefix
         show_attrs
         """
+        if file_path == "":
+            file_path = get_file_path()
         super(WebAgentTextEnv, self).__init__()
         self.observation_mode = observation_mode
         self.kwargs = kwargs
@@ -277,6 +279,22 @@ def tag_visible(element):
 
 class SimServer:
     """Lightweight simulator of WebShop Flask application for generating HTML observations"""
+
+    _instance = None  # Class variable to store the single instance
+    _initialized = False # Flag to ensure __init__ is called only once
+
+    def __new__(cls, *args, **kwargs):
+        """
+        Override __new__ to control instance creation.
+        If an instance doesn't exist, it creates one. Otherwise, it returns the existing instance.
+        """
+        if not cls._instance:
+            cls._instance = super(SimServer, cls).__new__(cls)
+            print("SimServer: Creating new instance.")
+        else:
+            print("SimServer: Returning existing instance.")
+        return cls._instance
+
     def __init__(
         self,
         base_url,
@@ -296,6 +314,8 @@ class SimServer:
         num_products (`int`) -- Number of products to search across
         human_goals (`bool`) -- If true, load human goals; otherwise, load synthetic goals
         """
+        if SimServer._initialized:
+            return
         # Load all products, goals, and search engine
         self.base_url = base_url
         self.all_products, self.product_item_dict, self.product_prices, _ = \
@@ -335,6 +355,7 @@ class SimServer:
         self.render_time = 0
         self.sample_time = 0
         self.assigned_instruction_text = None  # TODO: very hacky, should remove
+        SimServer._initialized = True # Mark as initialized
         
     @app.route('/', methods=['GET', 'POST'])
     def index(self, session_id, **kwargs):
