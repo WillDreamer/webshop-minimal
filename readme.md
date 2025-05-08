@@ -1,6 +1,7 @@
 # Webshop Minimal
 
 A minimalistic webshop environment for faster agentic system development. Adapted from full WebShop https://github.com/princeton-nlp/WebShop/tree/master.
+
 Authors for this adaptation: Xing Jin, Zihan Wang
 
 ## Installation
