@@ -502,7 +502,7 @@ class SimServer:
             purchased_product,
             goal,
             price=price,
-            options=session["options"],
+            options=purchased_product['options'],
             verbose=True
         )
 
