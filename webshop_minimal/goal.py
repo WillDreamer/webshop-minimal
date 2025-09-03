@@ -233,7 +233,7 @@ def get_reward(purchased_product, goal, price, options, **kwargs):
     r_att, num_attr_matches = get_attribute_reward(purchased_product, goal)
 
     r_option, num_option_matches = get_option_reward(
-        sum(purchased_product['options'].values(), []),
+        sum(options.values(), []),
         goal['goal_options'].items()
         if isinstance(goal['goal_options'], dict)
         else goal['goal_options']
